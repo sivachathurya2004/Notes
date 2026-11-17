@@ -1,0 +1,117 @@
+1) Tokenization:
+import nltk
+
+corpus = "Natural Language Processing is an important field of Artificial Intelligence and it is used in many applications."
+
+tokens = nltk.word_tokenize(corpus)
+sentences = nltk.sent_tokenize(corpus)
+
+print("Original corpus :\n", corpus, "\n")
+print("Tokenized words : \n", tokens)
+print("\nTokenized sentences : \n", sentences)
+
+
+2) Porter Stemming
+import nltk
+from nltk.stem.porter import PorterStemmer
+corpus = "playing played plays studies studying connected connection happiness"
+tokens = nltk.word_tokenize(corpus)
+
+print("Original corpus :\n", corpus, "\n")
+print("Tokenized words : \n", tokens)
+porter = PorterStemmer()
+
+stem_words = [porter.stem(stem) for stem in tokens]
+print("\nStemmed words :\n", stem_words)
+
+
+3) Stop Word Removal
+import nltk
+from nltk.corpus import stopwords
+
+corpus = "Natural Language Processing helps computers understand human languages. NLP is widely used in chatbots and machine translation."
+
+tokens = nltk.word_tokenize(corpus)
+
+print("Original sentence :\n", corpus, "\n")
+print("Tokenized words : \n", tokens)
+
+stop_words = set(stopwords.words("english"))
+
+rel_words = [rel for rel in tokens if not rel in stop_words]
+
+print("\nStop words :\n", [word for word in tokens if word in stop_words])
+print("\nWords after stop word removal :\n", rel_words)
+
+
+4) Word Analysis
+import nltk
+from collections import Counter
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+
+tweets = [
+    "I love this new smartphone!",
+    "The movie was very boring and disappointing.",
+    "The weather is pleasant today.",
+    "This product is amazing and useful."
+]
+
+words = []
+
+for tweet in tweets:
+    tokens = nltk.word_tokenize(tweet)
+    words.extend(tokens)
+
+print("Words :\n", words)
+
+words_lower = [word.lower() for word in words]
+
+wordfreq = Counter(words_lower)
+
+print("\nMost frequent words :\n", wordfreq.most_common())
+
+wordcloud = WordCloud(width=800, height=400).generate_from_frequencies(wordfreq)
+
+plt.figure(figsize=(10, 5))
+plt.imshow(wordcloud, interpolation='bilinear')
+plt.axis("off")
+plt.show()
+
+
+
+5) Word Generation
+import re
+from collections import Counter
+
+tweets = [
+    "@user I love this phone! 123",
+    "@user The phone is amazing and useful.",
+    "@user I love this product! #awesome",
+    "@user This product is amazing."
+]
+
+# 1. Remove usernames
+tweets = [tweet.replace("@user", "") for tweet in tweets]
+
+# 2. Remove punctuation, numbers and special characters
+tweets = [re.sub(r'[^a-zA-Z\s]', ' ', tweet) for tweet in tweets]
+
+# 3. Convert to lowercase
+tweets = [tweet.lower() for tweet in tweets]
+
+# 4. Tokenize
+tokens = []
+
+for tweet in tweets:
+    words = tweet.split()
+    tokens.extend(words)
+
+print("Tokenized words :")
+print(tokens)
+
+# 5. Display most frequently occurring words
+wordfreq = Counter(tokens)
+
+print("\nMost frequent words :")
+print(wordfreq.most_common(10))
